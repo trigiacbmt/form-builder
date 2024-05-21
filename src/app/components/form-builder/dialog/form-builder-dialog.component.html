@@ -12,7 +12,7 @@
         </mat-select>
     </mat-form-field>
     <section>
-        @if(controlType === 'paragraph') {
+        @if(controlType() === 'paragraph') {
 
         } @else {
             <div formArrayName="options">
