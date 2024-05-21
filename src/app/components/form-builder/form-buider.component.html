@@ -1,0 +1,61 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <section class="questions-container" formArrayName="questions">
+    @for (question of store.questions(); track question.id; let i = $index) {
+    @if(question.type === 'paragraph') {
+    <section
+      class="question-continer__items"
+      style="display: flex; flex-direction: column; gap: 10px"
+      [formGroupName]="i"
+    >
+      <label
+        ><strong
+          >{{ question?.description }}
+          {{ question?.required ? '*' : '' }}</strong
+        ></label
+      >
+      <textarea
+        formControlName="value"
+        style="width: 100%"
+        cols="30"
+        rows="10"
+      ></textarea>
+    </section>
+    } @else {
+    <section
+      class="question-continer__items"
+      [formGroupName]="i"
+      style="display: flex; flex-direction: column; gap: 10px"
+    >
+      <label
+        ><strong
+          >{{ question?.description }}
+          {{ question?.required ? '*' : '' }}</strong
+        ></label
+      >
+      <div formArrayName="options">
+        @for (option of question?.options; track option.id; let j = $index) {
+        <div [formGroupName]="j">
+          <mat-checkbox formControlName="value" [value]="option.value">{{
+            option.label
+          }}</mat-checkbox>
+        </div>
+        }
+      </div>
+    </section>
+    } } @empty {
+    <p>No questions. Please click add question to create new question.</p>
+    }
+  </section>
+  <u style="cursor: pointer" (click)="openDialog()">Add New Question</u>
+  <div class="action">
+    <button
+      [disabled]="form.invalid"
+      routerLink="/form/review"
+      type="button"
+      mat-stroked-button
+      color="primary"
+    >
+      Review my anwsers
+    </button>
+  </div>
+</form>

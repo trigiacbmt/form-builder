@@ -1,0 +1,38 @@
+<h1>Add a New Questions</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Question</mat-label>
+        <input formControlName="description" matInput placeholder="Enter your question here" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Question Type</mat-label>
+        <mat-select (selectionChange)="typeChangeHandler($event)" formControlName="type">
+            <mat-option value="paragraph">Paragraph</mat-option>
+            <mat-option value="multiple-choice">Multiple Choice</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <section>
+        @if(controlType === 'paragraph') {
+
+        } @else {
+            <div formArrayName="options">
+            @for(option of options.controls; track option.value.id; let i = $index){
+                <mat-form-field [formGroupName]="i">
+                    <mat-label>Answer {{i + 1}}</mat-label>
+                    <input formControlName="label" matInput placeholder="Enter option here" />
+                </mat-form-field>
+            }@empty {
+                <p>No answers. Please click + Add another answer to create new answer.</p>
+            }
+            </div>
+            <span (click)="onAddAnswer()">+ Add another answer</span>
+        }
+    </section>
+    <section>
+        <mat-checkbox formControlName="specified">Allow user to specify their own answer</mat-checkbox>
+        <mat-checkbox formControlName="required">This field is required</mat-checkbox>
+    </section>
+    <section>
+        <button [disabled]="formControl.invalid" type="submit" mat-stroked-button color="primary">Submit</button>
+    </section>
+</form>

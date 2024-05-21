@@ -1,0 +1,35 @@
+<section class="questions-container">
+  @for(question of questions; track question.id; let i = $index){
+  @if(question.type === 'paragraph') {
+  <section
+    class="question-container__items"
+    style="display: flex; flex-direction: column"
+  >
+    <p><strong>{{ question?.description }} {{ question?.required ? '*' : '' }}</strong></p>
+    <p>{{ question?.value }}</p>
+  </section>
+  }@else {
+  <section
+    class="question-container__items"
+    style="display: flex; flex-direction: column"
+  >
+  <p><strong>{{ question?.description }} {{ question?.required ? '*' : '' }}</strong></p>
+    <ul>
+      @for(option of question?.options; track option.id; let j = $index){
+      @if(option.value){
+      <li>{{ option.label }}</li>
+      } }
+    </ul>
+  </section>
+  } }@empty {
+  <p>No questions. Please click back to form builder to create new question.</p>
+  }
+  <button
+    routerLink="/form/builder"
+    type="button"
+    mat-stroked-button
+    color="primary"
+  >
+    Back to form builder
+  </button>
+</section>
